@@ -380,6 +380,7 @@ config:
   max_item_size: 0
 enabled_items: []
 ttl: 0s
+tracing_enabled: false
 ```
 
 All the settings are **optional**:
@@ -388,6 +389,7 @@ All the settings are **optional**:
 - `max_item_size`: maximum size of single item, in bytes. The value should be specified with a bytes unit (ie. `125MB`).
 - `enabled_items`: selectively choose what types of items to cache. Supported values are `Postings`, `Series` and `ExpandedPostings`. By default, all items are cached.
 - `ttl`: this field doesn't do anything for inmemory cache.
+- `tracing_enabled`: enables tracing spans for index cache fetch operations. Defaults to `false`.
 
 ### Memcached index cache
 
@@ -415,6 +417,7 @@ config:
     failure_percent: 0
 enabled_items: []
 ttl: 0s
+tracing_enabled: false
 ```
 
 The **required** settings are:
@@ -447,6 +450,7 @@ While the remaining settings are **optional**:
   - `failure_percent`: the failure percentage, which is based on `min_requests`, to determine if the circuit breaker should open.
 - `enabled_items`: selectively choose what types of items to cache. Supported values are `Postings`, `Series` and `ExpandedPostings`. By default, all items are cached.
 - `ttl`: ttl to store index cache items in memcached.
+- `tracing_enabled`: enables tracing spans for index cache fetch operations. Defaults to `false`.
 
 ### Redis index cache
 
@@ -488,6 +492,7 @@ config:
     failure_percent: 0.05
 enabled_items: []
 ttl: 0s
+tracing_enabled: false
 ```
 
 The **required** settings are:
@@ -505,6 +510,7 @@ While the remaining settings are **optional**:
 - `cache_size` size of the in-memory cache used for client-side caching. Client-side caching is enabled when this value is not zero. See [official documentation](https://redis.io/docs/latest/develop/reference/client-side-caching/) for more. It is highly recommended to enable this so that Thanos Store would not need to continuously retrieve data from Redis for repeated requests of the same key(-s).
 - `enabled_items`: selectively choose what types of items to cache. Supported values are `Postings`, `Series` and `ExpandedPostings`. By default, all items are cached.
 - `ttl`: ttl to store index cache items in redis.
+- `tracing_enabled`: enables tracing spans for index cache fetch operations. Defaults to `false`.
 
 Here is an example of what effect client-side caching could have:
 

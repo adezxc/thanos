@@ -35,6 +35,9 @@ type IndexCacheConfig struct {
 	// TTL for storing items in remote cache. Not supported for inmemory cache.
 	// Default value is 24h.
 	TTL time.Duration `yaml:"ttl"`
+	// TracingEnabled controls whether index cache fetch operations are traced.
+	// Tracing is disabled by default.
+	TracingEnabled bool `yaml:"tracing_enabled"`
 }
 
 // NewIndexCache initializes and returns new index cache.
@@ -78,7 +81,9 @@ func NewIndexCache(logger log.Logger, confContentYaml []byte, reg prometheus.Reg
 		return nil, errors.Wrap(err, fmt.Sprintf("create %s index cache", cacheConfig.Type))
 	}
 
-	cache = NewTracingIndexCache(string(cacheConfig.Type), cache)
+	if cacheConfig.TracingEnabled {
+		cache = NewTracingIndexCache(string(cacheConfig.Type), cache)
+	}
 	if len(cacheConfig.EnabledItems) > 0 {
 		if err = ValidateEnabledItems(cacheConfig.EnabledItems); err != nil {
 			return nil, err
